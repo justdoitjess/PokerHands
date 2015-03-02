@@ -1,0 +1,27 @@
+﻿Build started 3/1/2015 11:22:43 PM.
+     1>Project "C:\Users\Jessica\Documents\OOProgramming\PokerHands\PokerHands\PokerHands\PokerHands.vcxproj" on node 2 (Build target(s)).
+     1>ClCompile:
+         C:\Program Files (x86)\Microsoft Visual Studio 12.0\VC\bin\CL.exe /c /I"C:\Users\Public\Documents\libconfig-1.4.9\lib" /ZI /nologo /W3 /WX- /sdl /Od /Oy- /D _MBCS /Gm /EHsc /RTC1 /MDd /GS /fp:precise /Zc:wchar_t /Zc:forScope /Fo"Debug\\" /Fd"Debug\vc120.pdb" /Gd /TP /analyze- /errorReport:prompt Hand.cpp
+         Hand.cpp
+       Link:
+         C:\Program Files (x86)\Microsoft Visual Studio 12.0\VC\bin\link.exe /ERRORREPORT:PROMPT /OUT:"C:\Users\Jessica\Documents\OOProgramming\PokerHands\PokerHands\Debug\PokerHands.exe" /INCREMENTAL /NOLOGO /LIBPATH:"C:\Users\Public\Documents\libconfig-1.4.9\lib" kernel32.lib user32.lib gdi32.lib winspool.lib comdlg32.lib advapi32.lib shell32.lib ole32.lib oleaut32.lib uuid.lib odbc32.lib odbccp32.lib /MANIFEST /MANIFESTUAC:"level='asInvoker' uiAccess='false'" /manifest:embed /DEBUG /PDB:"C:\Users\Jessica\Documents\OOProgramming\PokerHands\PokerHands\Debug\PokerHands.pdb" /TLBID:1 /DYNAMICBASE /NXCOMPAT /IMPLIB:"C:\Users\Jessica\Documents\OOProgramming\PokerHands\PokerHands\Debug\PokerHands.lib" /MACHINE:X86 Debug\Card.obj
+         Debug\Hand.obj
+         Debug\main.obj
+     1>main.obj : error LNK2005: "bool __cdecl PokerHandRules::Hand1DefeatsHand2(class Hand &,class Hand &)" (?Hand1DefeatsHand2@PokerHandRules@@YA_NAAVHand@@0@Z) already defined in Hand.obj
+     1>main.obj : error LNK2005: "bool __cdecl PokerHandRules::Hand1TiesHand2(class Hand &,class Hand &)" (?Hand1TiesHand2@PokerHandRules@@YA_NAAVHand@@0@Z) already defined in Hand.obj
+     1>main.obj : error LNK2019: unresolved external symbol "__declspec(dllimport) public: __thiscall libconfig::Setting::operator int(void)const " (__imp_??BSetting@libconfig@@QBEHXZ) referenced in function _main
+     1>main.obj : error LNK2019: unresolved external symbol "__declspec(dllimport) public: class libconfig::Setting & __thiscall libconfig::Setting::operator[](char const *)const " (__imp_??ASetting@libconfig@@QBEAAV01@PBD@Z) referenced in function _main
+     1>main.obj : error LNK2019: unresolved external symbol "__declspec(dllimport) public: class libconfig::Setting & __thiscall libconfig::Setting::operator[](int)const " (__imp_??ASetting@libconfig@@QBEAAV01@H@Z) referenced in function _main
+     1>main.obj : error LNK2019: unresolved external symbol "__declspec(dllimport) public: bool __thiscall libconfig::Setting::lookupValue(char const *,int &)const " (__imp_?lookupValue@Setting@libconfig@@QBE_NPBDAAH@Z) referenced in function _main
+     1>main.obj : error LNK2019: unresolved external symbol "__declspec(dllimport) public: bool __thiscall libconfig::Setting::lookupValue(char const *,class std::basic_string<char,struct std::char_traits<char>,class std::allocator<char> > &)const " (__imp_?lookupValue@Setting@libconfig@@QBE_NPBDAAV?$basic_string@DU?$char_traits@D@std@@V?$allocator@D@2@@std@@@Z) referenced in function _main
+     1>main.obj : error LNK2019: unresolved external symbol "__declspec(dllimport) public: int __thiscall libconfig::Setting::getLength(void)const " (__imp_?getLength@Setting@libconfig@@QBEHXZ) referenced in function _main
+     1>main.obj : error LNK2019: unresolved external symbol "__declspec(dllimport) public: __thiscall libconfig::Config::Config(void)" (__imp_??0Config@libconfig@@QAE@XZ) referenced in function _main
+     1>main.obj : error LNK2019: unresolved external symbol "__declspec(dllimport) public: virtual __thiscall libconfig::Config::~Config(void)" (__imp_??1Config@libconfig@@UAE@XZ) referenced in function _main
+     1>main.obj : error LNK2019: unresolved external symbol "__declspec(dllimport) public: void __thiscall libconfig::Config::readFile(char const *)" (__imp_?readFile@Config@libconfig@@QAEXPBD@Z) referenced in function _main
+     1>main.obj : error LNK2019: unresolved external symbol "__declspec(dllimport) public: class libconfig::Setting & __thiscall libconfig::Config::getRoot(void)const " (__imp_?getRoot@Config@libconfig@@QBEAAVSetting@2@XZ) referenced in function _main
+     1>C:\Users\Jessica\Documents\OOProgramming\PokerHands\PokerHands\Debug\PokerHands.exe : fatal error LNK1120: 10 unresolved externals
+     1>Done Building Project "C:\Users\Jessica\Documents\OOProgramming\PokerHands\PokerHands\PokerHands\PokerHands.vcxproj" (Build target(s)) -- FAILED.
+
+Build FAILED.
+
+Time Elapsed 00:00:01.66

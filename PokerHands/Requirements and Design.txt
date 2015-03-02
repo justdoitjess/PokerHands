@@ -1,0 +1,46 @@
+Jessica Hatch
+Poker Hands Assigment
+Requirements and Design
+
+
+
+Requirements:
+1.    Use Libconfig to get poker hands to analyze
+2.    Analyze hands based on Wikipedia Page PokerHands
+3.    Compare this many of each kind of hand:
+               Straight flush 2
+               Four of a kind 2
+               Full house 2
+               Flush 2  
+               Straight 2
+               Three of a kind 2
+               Two pair 3
+               One pair 2
+               High card 2
+3.    Display both  the hands being compared
+4.    Idicate the winner of each compare
+
+Design
+
+Main
+
+Hand
+
+Card
+
+
+
+bool  operator < (Card& card1, Card& card2)
+{
+   return (card1.getCardValue() < card2.getCardValue());
+}
+
+bool operator > (Card& card1, Card& card2)
+{
+   return (card1.getCardValue() > card2.getCardValue());
+}
+
+bool operator == (Card& card1, Card& card2)
+{
+   return (card1.getCardValue() == card2.getCardValue());
+}
