@@ -8,13 +8,13 @@
 namespace PokerHandRules
 {
 
-   bool Hand1DefeatsHand2(Hand &hand1, Hand &hand2);
-   bool Hand1TiesHand2(Hand &hand1, Hand &hand2);
+   static bool Hand1DefeatsHand2(Hand &hand1, Hand &hand2);
+   static bool Hand1TiesHand2(Hand &hand1, Hand &hand2);
    
 }; //end namespace PokerHandRules
 
 
-bool PokerHandRules::Hand1DefeatsHand2(Hand &hand1, Hand &hand2)
+static bool PokerHandRules::Hand1DefeatsHand2(Hand &hand1, Hand &hand2)
 {
    //evaluate rank of 1 and 2
    hand1.EvaluateRank();
@@ -46,7 +46,7 @@ bool PokerHandRules::Hand1DefeatsHand2(Hand &hand1, Hand &hand2)
       return false;
    }
 }
-bool PokerHandRules::Hand1TiesHand2(Hand &hand1, Hand &hand2)
+static bool PokerHandRules::Hand1TiesHand2(Hand &hand1, Hand &hand2)
 {
    //check for defeat
    if (Hand1DefeatsHand2(hand1, hand2))

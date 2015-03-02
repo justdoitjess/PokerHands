@@ -3,8 +3,11 @@
 
 #include "PokerHandRules.h"
 
-#include <libconfig.h++>
+
 #include <iostream>
+#include <iomanip>
+#include <cstdlib>
+#include <libconfig.h++>
 
 
 using namespace std;
@@ -14,63 +17,86 @@ int main()
 {
    std::vector<Hand> myHands;
    //read in hands
-   //adding a comment
+
    Config cfg;
 
-   cfg.readFile("POKERHANDS");
-
-   const Setting & root = cfg.getRoot();
-
-   int retrievedData = root["Hand"];
-
-
-   const Setting &hands = root["inventory"]["hands"];
-   int countHand = hands.getLength();
-
-   for (int i = 0; i < countHand; ++i)
+   // Read the file. If there is an error, report it and exit.
+   try
    {
-      int val;
-      string suitstr;
-      PokerParameters::CARDSUITS suit;
-
-
-      const Setting &hand = hands[i];
-
-      const Setting &card1 = hand["card1"];
-      card1.lookupValue("suit", suitstr);
-      card1.lookupValue("val", val);
-      suit = PokerParameters::stringToEnum(suitstr);
-      Card cd1(val, suit);
-
-      const Setting &card2 = hand["card2"];
-      card2.lookupValue("suit", suitstr);
-      card2.lookupValue("val", val);
-      suit = PokerParameters::stringToEnum(suitstr);
-      Card cd2(val, suit);
-
-      const Setting &card3 = hand["card3"];
-      card3.lookupValue("suit", suitstr);
-      card3.lookupValue("val", val);
-      suit = PokerParameters::stringToEnum(suitstr);
-      Card cd3(val, suit);
-
-      const Setting &card4 = hand["card4"];
-      card4.lookupValue("suit", suitstr);
-      card4.lookupValue("val", val);
-      suit = PokerParameters::stringToEnum(suitstr);
-      Card cd4(val, suit);
-
-      const Setting &card5 = hand["card5"];
-      card5.lookupValue("suit", suitstr);
-      card5.lookupValue("val", val);
-      suit = PokerParameters::stringToEnum(suitstr);
-      Card cd5(val, suit);
-
-      //create a hand from the 5 cards and
-      //add hand to the list of hands to analyze.
-      Hand currentHand(cd1, cd2, cd3, cd4, cd5);
-      myHands.push_back(currentHand);
+      cfg.readFile("POKERHANDS.cfg");
    }
+   catch (const FileIOException &fioex)
+   {
+      std::cerr << "I/O error while reading file." << std::endl;
+      return(EXIT_FAILURE);
+   }
+   catch (const ParseException &pex)
+   {
+      std::cerr << "Parse error at " << pex.getFile() << ":" << pex.getLine()
+         << " - " << pex.getError() << std::endl;
+      return(EXIT_FAILURE);
+   }
+
+   const Setting& root = cfg.getRoot();
+
+   // Output a list of all books in the inventory.
+   try
+   {
+      const Setting &hands = root["inventory"]["hands"];
+      int count = hands.getLength();
+
+      for (int i = 0; i < count; ++i)
+      {
+         const Setting &hand = hands[i];
+
+         // Only output the record if all of the expected fields are present.
+         string suitstr1;
+         string suitstr2;
+         string suitstr3;
+         string suitstr4;
+         string suitstr5;
+         int val1;
+         int val2;
+         int val3;
+         int val4;
+         int val5;
+
+         if (!(hand.lookupValue("card1.suit", suitstr1)
+            && hand.lookupValue("card1.val", val1)
+            && hand.lookupValue("card2.suit", suitstr2)
+            && hand.lookupValue("card2.val", val2)
+            && hand.lookupValue("card3.suit", suitstr3)
+            && hand.lookupValue("card3.val", val3)
+            && hand.lookupValue("card4.suit", suitstr4)
+            && hand.lookupValue("card4.val", val4)
+            && hand.lookupValue("card5.suit", suitstr5)
+            && hand.lookupValue("card5.val", val5)))
+            continue;
+
+           //convert suit string to enum
+            PokerParameters::CARDSUITS suit1 = PokerParameters::stringToEnum(suitstr1);
+            PokerParameters::CARDSUITS suit2 = PokerParameters::stringToEnum(suitstr2);
+            PokerParameters::CARDSUITS suit3 = PokerParameters::stringToEnum(suitstr3);
+            PokerParameters::CARDSUITS suit4 = PokerParameters::stringToEnum(suitstr4);
+            PokerParameters::CARDSUITS suit5 = PokerParameters::stringToEnum(suitstr5);
+            //create cards
+            Card cd1(val1, suit1);
+            Card cd2(val2, suit2);
+            Card cd3(val3, suit3);
+            Card cd4(val4, suit4);
+            Card cd5(val5, suit5);
+
+            //create a hand from the 5 cards and
+            //add hand to the list of hands to analyze.
+            Hand currentHand(cd1, cd2, cd3, cd4, cd5);
+            myHands.push_back(currentHand);
+      }
+   }
+   catch (const SettingNotFoundException &nfex)
+   {
+      // Ignore.
+   }
+
    //evaluate hands
    
    //print outcome
