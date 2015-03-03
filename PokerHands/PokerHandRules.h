@@ -21,29 +21,61 @@ static bool PokerHandRules::Hand1DefeatsHand2(Hand &hand1, Hand &hand2)
    hand2.EvaluateRank();
 
    //compare ranks
-   bool hand1HigherRank =
-      hand1.GetHandRank() >
-      hand2.GetHandRank();
-
+   if (hand1.GetHandRank() > hand2.GetHandRank())
+   {
+      return true;
+   }
    //compare ranking high card
-   bool hand1HigherRankingCard = 
-      hand1.getRankingHighCard().getCardValue() > 
-      hand2.getRankingHighCard().getCardValue();
-
-   //compare non ranking high card
-   bool hand1HighNonRankingCard = 
-      hand1.getNonRankingHighCard().getCardValue() > 
-      hand2.getNonRankingHighCard().getCardValue();
-
-   if (hand1HigherRank || 
-         hand1HigherRankingCard || 
-         hand1HighNonRankingCard)
+   else if (hand1.getRankingHighCard().getCardValue() > hand2.getRankingHighCard().getCardValue())
    {
       return true;
    }
    else
    {
-      return false;
+      //compare second ranking high card or non ranking high card depending on rank
+      switch (hand1.GetHandRank())
+      {
+      case  PokerParameters::HANDRANKS::TWOPAIR:
+         if ((hand1.getSecondRankingHighCard().getCardValue() >
+            hand2.getSecondRankingHighCard().getCardValue()) ||
+            hand1.getNonRankingHighCard().getCardValue() >
+            hand2.getNonRankingHighCard().getCardValue())
+         {
+            return true;
+         }
+         else
+         {
+            return false;
+         }
+      case PokerParameters::HANDRANKS::FULLHOUSE:
+         if (hand1.getSecondRankingHighCard().getCardValue() >
+            hand2.getSecondRankingHighCard().getCardValue())
+         {
+            return true;
+         }
+         else
+         {
+            return false;
+         }
+
+      case PokerParameters::HANDRANKS::HIGHCARD:
+      case PokerParameters::HANDRANKS::ONEPAIR:
+      case PokerParameters::HANDRANKS::THREEOFAKIND:
+      case PokerParameters::HANDRANKS::FLUSH:
+      case PokerParameters::HANDRANKS::FOUROFAKIND:
+         if (hand1.getNonRankingHighCard().getCardValue() > hand2.getNonRankingHighCard().getCardValue())
+         {
+            return true;
+         }
+         else
+         {
+            return false;
+         }
+      case PokerParameters::HANDRANKS::STRAIGHT:
+      case PokerParameters::HANDRANKS::STRAIGHTFLUSH:
+         return false;
+
+      }
    }
 }
 static bool PokerHandRules::Hand1TiesHand2(Hand &hand1, Hand &hand2)
@@ -53,28 +85,59 @@ static bool PokerHandRules::Hand1TiesHand2(Hand &hand1, Hand &hand2)
    {
       return false;
    }
-
-   //compare ranks
-   bool ranksMatch = (hand1.GetHandRank() == hand2.GetHandRank());
-
-   //compare ranking high card
-   bool rankingCardMatch = (
-      hand1.getRankingHighCard().getCardValue() ==
-      hand2.getRankingHighCard().getCardValue());
-   
-   //compare non ranking high card
-   bool nonRankingCardMatch = (
-      hand1.getNonRankingHighCard().getCardValue() == 
-      hand2.getNonRankingHighCard().getCardValue());
-
-   if (ranksMatch && rankingCardMatch && nonRankingCardMatch)
+   else if (hand1.GetHandRank() != hand2.GetHandRank())
    {
-      return true;
+      return false;
+   }
+   else if (hand1.getRankingHighCard().getCardValue() == hand2.getRankingHighCard().getCardValue())
+   {
+      //compare second ranking high card or non ranking high card depending on rank
+      switch (hand1.GetHandRank())
+      {
+      case  PokerParameters::HANDRANKS::TWOPAIR:
+         if ((hand1.getSecondRankingHighCard().getCardValue() ==
+            hand2.getSecondRankingHighCard().getCardValue()) &&
+            (hand1.getNonRankingHighCard().getCardValue() ==
+            hand2.getNonRankingHighCard().getCardValue()))
+         {
+            return true;
+         }
+         else
+         {
+            return false;
+         }
+      case PokerParameters::HANDRANKS::FULLHOUSE:
+         if (hand1.getSecondRankingHighCard().getCardValue() ==
+            hand2.getSecondRankingHighCard().getCardValue())
+         {
+            return true;
+         }
+         else
+         {
+            return false;
+         }
+
+      case PokerParameters::HANDRANKS::HIGHCARD:
+      case PokerParameters::HANDRANKS::ONEPAIR:
+      case PokerParameters::HANDRANKS::THREEOFAKIND:
+      case PokerParameters::HANDRANKS::FLUSH:
+      case PokerParameters::HANDRANKS::FOUROFAKIND:
+         if (hand1.getNonRankingHighCard().getCardValue() == hand2.getNonRankingHighCard().getCardValue())
+         {
+            return true;
+         }
+         else
+         {
+            return false;
+         }
+      case PokerParameters::HANDRANKS::STRAIGHT:
+      case PokerParameters::HANDRANKS::STRAIGHTFLUSH:
+         return true;
+      }
    }
    else
    {
       return false;
    }
 }
-
 #endif

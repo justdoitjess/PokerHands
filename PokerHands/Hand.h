@@ -15,22 +15,23 @@ public:
 
    void EvaluateRank();
    PokerParameters::HANDRANKS GetHandRank();
+   void PrintHandRank();
 
    Card getRankingHighCard();
-   void SetRankingHighCard(Card highCard);
-
    Card getNonRankingHighCard();
-   void SetNonRankingHighCard(Card highCard);
+   Card getSecondRankingHighCard();
+   void SetRankingCards();
 
    void DisplayHand();
 
 private:
-   bool CompareCards(Card &card1, Card &card2);
+   static bool CompareCards(Card &card1, Card &card2);
    void SortHandOfCards();
 
    std::vector<Card> theHand;
    PokerParameters::HANDRANKS theRank = PokerParameters::HANDRANKS::NORANK;
    Card rankingHighCard;
+   Card secondRankingHighCard;
    Card nonRankingHighCard;
 
    //Poker Rules to Implement

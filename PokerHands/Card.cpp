@@ -39,6 +39,28 @@ void Card::setCardSuit(PokerParameters::CARDSUITS type)
 void Card::PrintCard()
 {
    int valToPrint = this->value;
+   std::string strValToPrint;
+   if (valToPrint > 10)
+   {
+      switch (valToPrint)
+      {
+      case 11:
+         strValToPrint = "J";
+         break;
+      case 12:
+         strValToPrint = "Q";
+         break;
+      case 13:
+         strValToPrint = "K";
+         break;
+      case 14:
+         strValToPrint = "A";
+         break;
+      default:
+         strValToPrint = "";
+         break;
+      }
+   }
    std::string suitToPrint = "ERR";
 
    switch (this->suit)
@@ -58,5 +80,12 @@ void Card::PrintCard()
    default:
       suitToPrint = "ERR";
    }
-   std::cout << valToPrint << suitToPrint;
+   if (!strValToPrint.empty())
+   {
+      std::cout << strValToPrint << suitToPrint << " ";
+   }
+   else
+   {
+      std::cout << valToPrint << suitToPrint << " ";
+   }
 }

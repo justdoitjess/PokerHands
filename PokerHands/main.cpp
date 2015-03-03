@@ -1,110 +1,141 @@
-//Jessica Hatch
-//Poker Hands Assignment
-
+//********************************************************************
+// Poker Hands Assignment
+// Author: Jessica Hatch
+// Date: March 2, 2015
+// Class: Object Oriented Programming in C++
+// Purpose: This program ranks and displays poker hands.
+// Input: input of txt file holding poker hands (*libconfig implementation 
+// was started but not completed.
+// Output: A display of poker hands with rank
+//********************************************************************
 #include "PokerHandRules.h"
 
 
 #include <iostream>
 #include <iomanip>
 #include <cstdlib>
-#include <libconfig.h++>
+//#include <libconfig.h++>
+#include <conio.h> // for _getch()
+#include <vector>
+#include <fstream> //for file read/write
 
 
 using namespace std;
-using namespace libconfig;
 
 int main()
 {
+   string fileNameInput  =
+      "C:/Users/Jessica/Documents/OOProgramming/PokerHands/HandsToAnalyze.txt";
+   bool endOfFile = false; //flag to deal with end of file
+
+   //explain that you're going to read in text file consiting 
+   //of poker hands and you're going to rank and dispay the hand
+   //rank is as follows:
+   //Straight Flush, Four of A Kind, Full House, Flush, Straight, 
+   //Three of a Kind, Two Pair, One Pair, High Card
+   cout << "Hello! Let's Learn How to Play Poker\n";
+   cout << "Make sure all hands \nare written in a text file separated by commas.";
+   cout << "\nName it HandsToAnalyze.txt\n";
+   cout << "\nI will analyze each hand listed, \nprint the hand, \nprint the rank of the hand,";
+   cout << "\nand Compare the hands 2 at a time.\n\n";
+   cout << endl;
+
+   //vector of all hands read
    std::vector<Hand> myHands;
-   //read in hands
+   std::vector<Card> allCards;
 
-   Config cfg;
-
-   // Read the file. If there is an error, report it and exit.
-   try
+   //read in file line by line
+   ifstream infile(fileNameInput);
+   while (infile.good())
    {
-      cfg.readFile("POKERHANDS.cfg");
-   }
-   catch (const FileIOException &fioex)
-   {
-      std::cerr << "I/O error while reading file." << std::endl;
-      return(EXIT_FAILURE);
-   }
-   catch (const ParseException &pex)
-   {
-      std::cerr << "Parse error at " << pex.getFile() << ":" << pex.getLine()
-         << " - " << pex.getError() << std::endl;
-      return(EXIT_FAILURE);
-   }
-
-   const Setting& root = cfg.getRoot();
-
-   // Output a list of all books in the inventory.
-   try
-   {
-      const Setting &hands = root["inventory"]["hands"];
-      int count = hands.getLength();
-
-      for (int i = 0; i < count; ++i)
+      std::vector<Card> currentCards;
+      std::vector<int> cardValues;
+      std::vector<PokerParameters::CARDSUITS> cardSuits;
+      //read in 5 cards to make up first hand to compare
+      for (int i = 0; i < 5; i++)
       {
-         const Setting &hand = hands[i];
+         std::string cardValStr;
+         std::string cardSuitStr;
 
-         // Only output the record if all of the expected fields are present.
-         string suitstr1;
-         string suitstr2;
-         string suitstr3;
-         string suitstr4;
-         string suitstr5;
-         int val1;
-         int val2;
-         int val3;
-         int val4;
-         int val5;
+         //get value of card
+         getline(infile, cardValStr, ',');
+         cardValues.insert(cardValues.begin(), atoi(cardValStr.c_str()));
 
-         if (!(hand.lookupValue("card1.suit", suitstr1)
-            && hand.lookupValue("card1.val", val1)
-            && hand.lookupValue("card2.suit", suitstr2)
-            && hand.lookupValue("card2.val", val2)
-            && hand.lookupValue("card3.suit", suitstr3)
-            && hand.lookupValue("card3.val", val3)
-            && hand.lookupValue("card4.suit", suitstr4)
-            && hand.lookupValue("card4.val", val4)
-            && hand.lookupValue("card5.suit", suitstr5)
-            && hand.lookupValue("card5.val", val5)))
-            continue;
+         //get suit of card
+         getline(infile, cardSuitStr, ',');
+         cardSuits.insert(cardSuits.begin(), PokerParameters::stringToEnum(cardSuitStr));
+      }//end read in 5 cards for loop
 
-           //convert suit string to enum
-            PokerParameters::CARDSUITS suit1 = PokerParameters::stringToEnum(suitstr1);
-            PokerParameters::CARDSUITS suit2 = PokerParameters::stringToEnum(suitstr2);
-            PokerParameters::CARDSUITS suit3 = PokerParameters::stringToEnum(suitstr3);
-            PokerParameters::CARDSUITS suit4 = PokerParameters::stringToEnum(suitstr4);
-            PokerParameters::CARDSUITS suit5 = PokerParameters::stringToEnum(suitstr5);
-            //create cards
-            Card cd1(val1, suit1);
-            Card cd2(val2, suit2);
-            Card cd3(val3, suit3);
-            Card cd4(val4, suit4);
-            Card cd5(val5, suit5);
+      //make 5 cards
+      Card cd1(cardValues[0], cardSuits[0]);
+      Card cd2(cardValues[1], cardSuits[1]);
+      Card cd3(cardValues[2], cardSuits[2]);
+      Card cd4(cardValues[3], cardSuits[3]);
+      Card cd5(cardValues[4], cardSuits[4]);
 
-            //create a hand from the 5 cards and
-            //add hand to the list of hands to analyze.
-            Hand currentHand(cd1, cd2, cd3, cd4, cd5);
-            myHands.push_back(currentHand);
+      //make first hand
+      Hand hand1(cd1, cd2, cd3, cd4, cd5);
+
+      //read in 5 cards to make up second hand to compare
+      for (int i = 0; i < 5; i++)
+      {
+         std::string cardValStr;
+         std::string cardSuitStr;
+
+         //get value of card
+         getline(infile, cardValStr, ',');
+         cardValues.insert(cardValues.begin(), atoi(cardValStr.c_str()));
+
+         //get suit of card
+         getline(infile, cardSuitStr, ',');
+         cardSuits.insert(cardSuits.begin(), PokerParameters::stringToEnum(cardSuitStr));
+      }//end read in 5 cards for loop
+
+      //make 5 cards
+      Card cd6(cardValues[0], cardSuits[0]);
+      Card cd7(cardValues[1], cardSuits[1]);
+      Card cd8(cardValues[2], cardSuits[2]);
+      Card cd9(cardValues[3], cardSuits[3]);
+      Card cd10(cardValues[4], cardSuits[4]);
+
+      //make second hand
+      Hand hand2(cd6, cd7, cd8, cd9, cd10);
+
+      //don't compare empty hands
+      if (0 != hand1.GetHand()[0].getCardValue())
+      {
+         //compare 2 hands and determine winner
+         std::string outcome;
+         bool hand1BeatsHand2 = PokerHandRules::Hand1DefeatsHand2(hand1, hand2);
+         bool hand1TiesHand2 = PokerHandRules::Hand1TiesHand2(hand1, hand2);
+         if (hand1BeatsHand2)
+         {
+            outcome = "defeats\n\n";
+         }
+         else if (hand1TiesHand2)
+         {
+            outcome = "ties\n\n";
+         }
+         else
+         {
+            outcome = "is defeated by\n\n";
+         }
+
+         //print outcome
+         cout << "\n\nFirst Hand: ";
+         hand1.DisplayHand();
+         hand1.PrintHandRank();
+         cout << "\n";
+
+         cout << outcome;
+
+         cout << "Second Hand";
+         hand2.DisplayHand();
+         hand2.PrintHandRank();
+         cout << "\n";
       }
    }
-   catch (const SettingNotFoundException &nfex)
-   {
-      // Ignore.
-   }
-
-   //evaluate hands
-   
-   //print outcome
-   for (int i = 0; i < myHands.size(); i++)
-   {
-      myHands[i].DisplayHand();
-   }
-
+   _getch();
    return 0;
 
 }//end main
